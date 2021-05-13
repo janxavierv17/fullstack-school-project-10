@@ -1,6 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
+../api/node_modules
 /node_modules
 /.pnp
 .pnp.js
@@ -12,6 +13,10 @@
 /build
 
 # misc
+../api/README.md
+../api/RESTAPI.postman_collection.json
+../api/.gitignore
+../api/seed
 .DS_Store
 .env.local
 .env.development.local
@@ -23,3 +28,4 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
