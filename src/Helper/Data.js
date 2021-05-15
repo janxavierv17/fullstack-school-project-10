@@ -14,7 +14,7 @@ export default class Data {
 
         const options = {
             method,
-            header: {
+            headers: {
                 'Content-type': 'application/json; charset=utf-8',
             },
         };
@@ -26,9 +26,8 @@ export default class Data {
         if (requiresAuth) {
             console.log("Credentials:", credentials)
             const encodedCredentials = btoa(`${credentials.emailAddress}:${credentials.password}`)
-
-            options.header['Authorization'] = `Basic ${encodedCredentials}`
-
+            options.headers['Authorization'] = `Basic ${encodedCredentials}`
+            console.log(encodedCredentials)
         }
         console.log("OPTIONS: ", options)
         return fetch(url, options)
