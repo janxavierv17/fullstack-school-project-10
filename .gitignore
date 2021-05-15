@@ -16,7 +16,6 @@
 ../api/README.md
 ../api/RESTAPI.postman_collection.json
 ../api/.gitignore
-../api/seed
 .DS_Store
 .env.local
 .env.development.local

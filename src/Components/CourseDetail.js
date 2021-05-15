@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 export default function CourseDetail(props) {
+
     const id = props.match.params.id
+
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
+
     useEffect(() => {
         async function fetchCourse() {
             let response = await fetch(`http://localhost:5000/api/courses/${id}`)
@@ -16,14 +19,12 @@ export default function CourseDetail(props) {
     }, [id])
 
     let materialsNeeded = ""
-    if (!loading) {
+    if (!loading && data.course.materialsNeeded !== null) {
         const splitMaterialString = data.course.materialsNeeded.split("*")
         const filteredString = splitMaterialString.filter(function (el) {
             return el !== ""
         })
-
         materialsNeeded = filteredString.map((mats, index) => <li key={index}> {mats} </li>)
-        console.log(materialsNeeded)
     }
 
     return (
