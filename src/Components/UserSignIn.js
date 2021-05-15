@@ -1,28 +1,64 @@
-import React, { useRef } from "react"
+import React, { Component } from "react"
 
-export default function UserSignIn(props) {
-    const { context } = props
+export default class UserSignIn extends Component {
 
-    const emailRef = useRef();
-    const passwordRef = useRef();
-
-    const handleSubmit = () => {
-        // context.actions.signIn()
+    state = {
+        emailAddress: "",
+        password: "",
+        errors: []
     }
 
-    return (
-        <main>
-            <div className="form--centered">
-                <h2>Sign in</h2>
-                <form onSubmit={handleSubmit}>
-                    <label htmlFor="emailAddress">Email Address</label>
-                    <input id="emailAddress" name="emailAddress" type="email" ref={emailRef} />
-                    <label htmlFor="password">Password</label>
-                    <input id="password" name="password" type="password" ref={passwordRef} />
-                    <button className="button" type="submit">Sign In</button>
-                    <button className="button button-secondary" onClick={() => { props.history.push("/") }}>Cancel</button>
-                </form>
-            </div>
-        </main>
-    )
+    handleSubmit = (event) => {
+        event.preventDefault();
+        const { context } = this.props;
+        const { emailAddress, password } = this.state;
+        const { from } = this.props.location.state || { from: { pathname: '/' } }
+
+        context.actions.signIn(emailAddress, password)
+            .then(user => {
+                console.log("The user: ", user)
+                if (user === null) {
+                    this.setState(() => {
+                        return { errors: ["Sign-in was unsuccessful."] }
+                    })
+                } else {
+                    console.log("FROM: ", from)
+                    this.props.history.push(from);
+                    console.log(`SUCCESS ${emailAddress} is now signed in.`)
+                }
+            }).catch(err => {
+                console.log(err)
+                this.props.history.push("/error");
+            })
+    }
+
+    onChange = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+
+        this.setState(() => {
+            return {
+                [name]: [value]
+            }
+        })
+    }
+
+    render() {
+        return (
+            <main>
+                <div className="form--centered">
+                    <h2>Sign in</h2>
+                    <form onSubmit={this.handleSubmit}>
+                        <label htmlFor="emailAddress">Email Address</label>
+                        <input onChange={this.onChange} value={this.state.emailAddress} id="emailAddress" name="emailAddress" type="email" />
+                        <label htmlFor="password">Password</label>
+                        <input onChange={this.onChange} value={this.state.password} id="password" name="password" type="password" />
+                        <button className="button" type="submit">Sign In</button>
+                        <button className="button button-secondary" onClick={() => { this.props.history.push("/") }}>Cancel</button>
+                    </form>
+                </div>
+            </main>
+        )
+    }
+
 }

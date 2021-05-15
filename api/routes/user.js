@@ -46,7 +46,7 @@ router.get("/users", authenticateUser, asyncHandler(async (request, response) =>
  * @route   GET /api/users
  * @access  PUBLIC
  */
-router.post("/users", asyncHandler(async (request, response, next) => {
+router.post("/users", asyncHandler(async (request, response) => {
     try {
         const { firstName, lastName, emailAddress, password } = request.body
         await User.create({
@@ -57,12 +57,11 @@ router.post("/users", asyncHandler(async (request, response, next) => {
         });
         response.status(201).location("/").end();
     } catch (error) {
-        // This route checks and handles SequelizeValidationError or SequelizeUniqueConstraintError
-        if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
-            const errors = error.errors.map(error => error.message)
-            response.status(400).json({ errors })
+        if (error.name === "SequelizeValidationError" || error.name === "SequelizeUniqueConstraintError") {
+            const errors = error.errors.map(error => error.message);
+            response.status(400).json({ errors });
         } else {
-            response.status(400).json()
+            throw error;
         }
     }
 }))

@@ -9,7 +9,7 @@ export default class Data {
      * @param {*} requiresAuth - encodes user credentials for authorization
      * @param {*} credentials  - our encoded credentials (username, password)
      */
-    api(path, method = "GET", body = null, requiresAuth = false, credentials = null) {
+    api(path, method = 'GET', body = null, requiresAuth = false, credentials = null) {
         const url = config.apiBaseUrl + path;
 
         const options = {
@@ -24,12 +24,13 @@ export default class Data {
         }
 
         if (requiresAuth) {
+            console.log("Credentials:", credentials)
             const encodedCredentials = btoa(`${credentials.emailAddress}:${credentials.password}`)
-            console.log("btoa encoded credentials: ", encodedCredentials)
 
-            options.header['Authrization'] = `Basic ${encodedCredentials}`
-            console.log(options)
+            options.header['Authorization'] = `Basic ${encodedCredentials}`
+
         }
+        console.log("OPTIONS: ", options)
         return fetch(url, options)
     }
 
@@ -47,16 +48,19 @@ export default class Data {
             throw new Error();
         }
     }
-    // Create User
+    // Create new user:
     async createUser(user) {
-        const response = await this.api('/users', 'POST', user,);
+        const response = await this.api('/users', 'POST', user);
+        console.log(response)
         if (response.status === 201) {
             return [];
-        } else if (response.status === 400) {
-            return response.json().then((data) => {
+        }
+        else if (response.status === 400) {
+            return response.json().then(data => {
                 return data.errors;
             });
-        } else {
+        }
+        else {
             throw new Error();
         }
     }

@@ -1,6 +1,6 @@
-import React from "react";
+import React, { Component } from "react";
 
-export default class UserSignUp extends React.Component {
+export default class UserSignUp extends Component {
     state = {
         firstName: '',
         lastName: '',
@@ -10,9 +10,66 @@ export default class UserSignUp extends React.Component {
         errors: [],
     };
 
+    handleSubmit = (event) => {
+        event.preventDefault();
+        const { context } = this.props; //extract context from props in order to get data from the global state
+
+        const { //unpack properties from state object to use during form submit
+            firstName,
+            lastName,
+            emailAddress,
+            password,
+            confirmedPassword
+        } = this.state;
+
+        const user = { // Combine properties from state to pass into context.data.createUser()
+            firstName,
+            lastName,
+            emailAddress,
+            password,
+            confirmedPassword
+        };
+
+        //create new user
+        context.data.createUser(user)
+            .then(errors => {
+                if (errors.length) { //check if returned promise is an array of errors.
+                    this.setState({ errors }); // set state to the array of errors
+                } else {
+                    console.log(`${emailAddress} is successfully signed up and authenticated!`); //log out that user has successfully been authenticated
+
+                    context.actions.signIn(emailAddress, password)
+                        .then((user) => {
+                            if (user === null) {
+                                this.setState(() => {
+                                    return { errors: ["User unable to login"] }
+                                })
+                            } else {
+                                this.props.history.push('/') //navigate user to home/courses route
+                            }
+                        })
+                }
+            })
+            .catch((err) => { //handle rejected promises
+                console.log(err);
+                this.props.history.push('/error');
+            })
+    }
+
+    // onChange Handler
+    handleChange = (event) => {
+        event.preventDefault();
+        const name = event.target.name;
+        const value = event.target.value;
+
+        this.setState(() => {
+            return {
+                [name]: value,
+            };
+        });
+    };
 
     render() {
-        console.log(this.state)
         const {
             firstName,
             lastName,
@@ -57,45 +114,5 @@ export default class UserSignUp extends React.Component {
             </main>
         )
     }
-
-    handleSubmit = (event) => {
-        event.preventDefault();
-        const { context } = this.props
-        const { firstName, lastName, emailAddress, password } = this.state;
-
-        // ES6 Destructuring. This variable creates an object to pass to our createUser method.
-        const user = {
-            firstName,
-            lastName,
-            emailAddress,
-            password
-        }
-
-        context.data.createUser(user)
-            .then(errors => {
-                if (errors.length) {
-                    this.setState({ errors });
-                } else {
-                    context.actions.signIn(emailAddress, password).then(() => {
-                        this.props.history.push("/")
-                    })
-                    console.log(`${user.firstName} is successfully signed up and authenticated.`)
-                }
-            }).catch(err => {
-                console.log(err)
-            })
-    }
-
-    // onChange Handler
-    handleChange = (e) => {
-        const name = e.target.name;
-        const value = e.target.value;
-
-        this.setState(() => {
-            return {
-                [name]: value,
-            };
-        });
-    };
 }
 
