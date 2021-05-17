@@ -14,9 +14,9 @@ export default function CourseDetail(props) {
             setData(response)
             setLoading(false)
         }
-
         fetchCourse();
     }, [id])
+
 
     let materialsNeeded = ""
     if (!loading && data.course.materialsNeeded !== null) {
@@ -27,13 +27,13 @@ export default function CourseDetail(props) {
         materialsNeeded = filteredString.map((mats, index) => <li key={index}> {mats} </li>)
     }
 
+    console.log(data)
     return (
-
         <main>
             <div className="actions--bar">
                 <div className="wrap">
                     <div className="button">
-                        <Link to="/">Update Course</Link>
+                        <Link to={`/courses/${id}/update`}>Update Course</Link>
                     </div>
                     <div className="button">
                         <Link to="/">Delete Course</Link>
@@ -44,29 +44,25 @@ export default function CourseDetail(props) {
                 </div>
             </div>
 
-            {
-
-                loading
-                    ? <h1>Loading ...</h1>
-                    : <div className="main--flex">
-                        <div>
-                            <h3 className="course--detail--title">Course</h3>
-                            <h4 className="course--name">{data.course.title}</h4>
-                            <p>By: {data.course.User.firstName} {data.course.User.lastName}</p>
-                            <p>{data.course.description}</p>
-                        </div>
-                        <div>
-                            <h3 className="course--detail-title">Estimated Time</h3>
-                            <p>{data.course.estimatedTime}</p>
-                            <h3 className="course--detail--title">Materials Needed</h3>
-                            <ul className="course--detail-list">
-                                {materialsNeeded}
-                            </ul>
-                        </div>
+            {loading
+                ? <h1>Loading ...</h1>
+                : <div className="main--flex">
+                    <div>
+                        <h3 className="course--detail--title">Course</h3>
+                        <h4 className="course--name">{data.course.title}</h4>
+                        <p>By: {data.course.User.firstName} {data.course.User.lastName}</p>
+                        <p>{data.course.description}</p>
                     </div>
+                    <div>
+                        <h3 className="course--detail-title">Estimated Time</h3>
+                        <p>{data.course.estimatedTime}</p>
+                        <h3 className="course--detail--title">Materials Needed</h3>
+                        <ul className="course--detail-list">
+                            {materialsNeeded}
+                        </ul>
+                    </div>
+                </div>
             }
-
-
         </main>
     )
 }

@@ -33,7 +33,7 @@ export default class CreateCourse extends Component {
 
     handleChange = (event) => {
         const name = event.target.name;
-        const value = event.target.value
+        const value = event.target.value;
 
         this.setState(() => {
             return {
