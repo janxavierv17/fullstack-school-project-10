@@ -52,12 +52,15 @@ router.get("/courses/:id", asyncHandler(async (request, response) => {
 router.post("/courses", authenticateUser, asyncHandler(async (request, response) => {
     try {
         const authenticatedUser = request.currentUser;
-        const { title, description } = request.body
+        const { title, description, estimatedTime, materialsNeeded } = request.body
         if (authenticatedUser) {
             const createdCourse = await Course.create({
+                userId: authenticatedUser.dataValues.id,
                 title: title,
                 description: description,
-                userId: authenticatedUser.dataValues.id
+                estimatedTime: estimatedTime,
+                materialsNeeded: materialsNeeded
+
             })
             response.status(201).location(`/api/course/${createdCourse.dataValues.id}`).end();
         }

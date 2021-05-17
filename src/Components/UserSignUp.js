@@ -12,32 +12,16 @@ export default class UserSignUp extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        const { context } = this.props; //extract context from props in order to get data from the global state
+        const { context } = this.props;
+        const { firstName, lastName, emailAddress, password, confirmedPassword } = this.state;
+        const user = { firstName, lastName, emailAddress, password, confirmedPassword };
 
-        const { //unpack properties from state object to use during form submit
-            firstName,
-            lastName,
-            emailAddress,
-            password,
-            confirmedPassword
-        } = this.state;
-
-        const user = { // Combine properties from state to pass into context.data.createUser()
-            firstName,
-            lastName,
-            emailAddress,
-            password,
-            confirmedPassword
-        };
-
-        //create new user
         context.data.createUser(user)
             .then(errors => {
-                if (errors.length) { //check if returned promise is an array of errors.
-                    this.setState({ errors }); // set state to the array of errors
+                if (errors.length) {
+                    this.setState({ errors });
                 } else {
-                    console.log(`${emailAddress} is successfully signed up and authenticated!`); //log out that user has successfully been authenticated
-
+                    console.log(`${emailAddress} is successfully signed up and authenticated!`);
                     context.actions.signIn(emailAddress, password)
                         .then((user) => {
                             if (user === null) {
@@ -45,12 +29,12 @@ export default class UserSignUp extends Component {
                                     return { errors: ["User unable to login"] }
                                 })
                             } else {
-                                this.props.history.push('/') //navigate user to home/courses route
+                                this.props.history.push('/')
                             }
                         })
                 }
             })
-            .catch((err) => { //handle rejected promises
+            .catch((err) => {
                 console.log(err);
                 this.props.history.push('/error');
             })
@@ -70,14 +54,7 @@ export default class UserSignUp extends Component {
     };
 
     render() {
-        const {
-            firstName,
-            lastName,
-            emailAddress,
-            password,
-            confirmPassword,
-            errors,
-        } = this.state;
+        const { firstName, lastName, emailAddress, password, confirmPassword, errors, } = this.state;
 
         return (
             <main>
@@ -90,7 +67,6 @@ export default class UserSignUp extends Component {
                         </div>
                         : null
                     }
-
                     <form onSubmit={this.handleSubmit}>
                         <label htmlFor="firstName"> First Name </label>
                         <input id="firstName" name="firstName" type="text" onChange={this.handleChange} value={firstName} />
