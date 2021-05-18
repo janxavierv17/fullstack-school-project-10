@@ -2,11 +2,25 @@ import React, { Component } from "react";
 export default class CreateCourse extends Component {
 
     state = {
+        firstName: "",
+        lastName: "",
         title: "",
         description: "",
         estimatedTime: "",
         materialsNeeded: "",
         errors: []
+    }
+
+    componentDidMount() {
+        if (this.props.context.authenticatedUser) {
+            const data = this.props.context.authenticatedUser
+            this.setState(() => {
+                return {
+                    firstName: data.firstName,
+                    lastName: data.lastName
+                }
+            })
+        }
     }
 
     handleSubmit = (event) => {
@@ -42,9 +56,11 @@ export default class CreateCourse extends Component {
         });
     }
 
+
+
     render() {
         const { title, description, estimatedTime, materialsNeeded, errors } = this.state
-        const { firstName, lastName } = this.props.context.authenticatedUser
+
         return (
             <main>
                 <div className="wrap">
@@ -64,7 +80,7 @@ export default class CreateCourse extends Component {
                                 <label htmlFor="courseTitle">Course Title</label>
                                 <input id="courseTitle" name="title" type="text" value={title} onChange={this.handleChange} />
 
-                                <p>By {firstName} {lastName}</p>
+                                <p>By {this.state.firstName} {this.state.lastName}</p>
 
                                 <label htmlFor="courseDescription">Course Description</label>
                                 <textarea id="courseDescription" name="description" value={description} onChange={this.handleChange} ></textarea>

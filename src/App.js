@@ -25,9 +25,9 @@ function App() {
         <Route path="/" component={Courses} exact />
         <Route path="/signin" component={userSignInWithContext} />
         <Route path="/signup" component={userSignUpWithContext} />
-        <Route path="/courses/:id" component={CourseDetails} />
+        <Route exact path="/courses/:id" component={CourseDetails} />
         <Route path="/course/create" component={createCourseWithContext} />
-        <Route path="/course/:id/update" component={updateCourseWithContext} />
+        <Route exact path="/courses/:id/update" component={updateCourseWithContext} />
       </Switch>
     </Router>
   );
