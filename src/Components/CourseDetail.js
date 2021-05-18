@@ -8,7 +8,6 @@ export default function CourseDetail(props) {
     const [loading, setLoading] = useState(true)
     const [courseID, setCourseID] = useState(null)
 
-
     const fetchCourse = async () => {
         let response = await fetch(`http://localhost:5000/api/courses/${id}`)
         response = await response.json();
@@ -36,12 +35,12 @@ export default function CourseDetail(props) {
             <div className="actions--bar">
                 <div className="wrap">
                     <div className="button">
-                        <Link to={`/courses/${courseID}/update`}>Update Course</Link>
+                        <Link to={`${courseID}/update`}>Update Course</Link>
                     </div>
                 </div>
             </div>
 
-            {loading
+            {/* {loading
                 ? <h1>Loading ...</h1>
                 : <div className="main--flex">
                     <div>
@@ -59,7 +58,7 @@ export default function CourseDetail(props) {
                         </ul>
                     </div>
                 </div>
-            }
+            } */}
         </main>
     )
 }

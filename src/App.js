@@ -1,13 +1,13 @@
 import React from "react"
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
+
 import Header from "./Components/Header";
 import Courses from "./Components/Courses";
 import UserSignUp from "./Components/UserSignUp";
 import UserSignIn from "./Components/UserSignIn";
 import CreateCourse from "./Components/CreateCourse"
-import UpdateCourse from "./Components/UpdateCourse";
+import UpdateCourse from "./Components/UpdateCourse"
 import CourseDetails from "./Components/CourseDetail";
-
 
 import withContext from "./Context"
 
@@ -17,12 +17,13 @@ const userSignInWithContext = withContext(UserSignIn)
 const createCourseWithContext = withContext(CreateCourse)
 const updateCourseWithContext = withContext(UpdateCourse)
 
+
 function App() {
   return (
     <Router >
       <HeaderWithContext />
       <Switch>
-        <Route path="/" component={Courses} exact />
+        <Route exact path="/" component={Courses} />
         <Route path="/signin" component={userSignInWithContext} />
         <Route path="/signup" component={userSignUpWithContext} />
         <Route exact path="/courses/:id" component={CourseDetails} />
