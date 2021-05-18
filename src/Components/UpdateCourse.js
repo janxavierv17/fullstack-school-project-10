@@ -1,5 +1,5 @@
 import React from "react"
-
+import { Redirect } from "react-router-dom"
 const UpdateCourse = (props) => {
     const handleChange = (event) => {
         event.preventDefault();
@@ -25,7 +25,7 @@ const UpdateCourse = (props) => {
                             <input id="materialsNeeded" name="materialsNeeded" type="text" value="materialsNeeded" onChange={handleChange} />
 
                             <button className="button" type="submit">Update Course</button>
-                            {/* <button className="button button-secondary" onClick={props.history.push("/")}>Cancel</button> */}
+                            <button className="button button-secondary" onClick={() => { props.history.push("/") }}> Cancel</button>
                         </div>
                     </div>
                 </form>
