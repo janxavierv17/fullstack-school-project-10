@@ -37,6 +37,7 @@ export default function Courses(props) {
                             </span>
                         </div>
                     </Link>
+
                 </div>
             </main>
         </div >

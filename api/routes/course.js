@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const { asyncHandler } = require("../middleware/async-handler")
-const { Op } = require('sequelize');
 const Course = require("../models").Course;
 const User = require("../models").User
 const { authenticateUser } = require("../middleware/auth-user")
@@ -88,8 +87,8 @@ router.put("/courses/:id", authenticateUser, asyncHandler(async (request, respon
         if (!request.body.title && !request.body.description) {
             response.status(400).json({ message: "Please enter a title and description." })
         } else {
-            if (creator.dataValues.id == course.dataValues.userId) {
-                course.update(request.body)
+            if (creator.dataValues.id === course.dataValues.userId) {
+                await course.update(request.body)
                 response.sendStatus(204).json({ message: "Editing course complete." });
             } else {
                 response.sendStatus(403).json({ message: "You're not the creator of this course." });
