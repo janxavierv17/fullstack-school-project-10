@@ -84,15 +84,15 @@ router.put("/courses/:id", authenticateUser, asyncHandler(async (request, respon
         const creator = request.currentUser
         // Find the course to update using the primary key method.
         const course = await Course.findByPk(request.params.id)
+
+        if (creator.dataValues.id === course.dataValues.userId) {
+            await course.update(request.body)
+            response.status(204).json({ message: "Editing course complete." });
+        } else {
+            response.status(403).json({ message: "You're not the creator of this course." });
+        }
         if (!request.body.title && !request.body.description) {
             response.status(400).json({ message: "Please enter a title and description." })
-        } else {
-            if (creator.dataValues.id === course.dataValues.userId) {
-                await course.update(request.body)
-                response.sendStatus(204).json({ message: "Editing course complete." });
-            } else {
-                response.sendStatus(403).json({ message: "You're not the creator of this course." });
-            }
         }
     } catch (error) {
         if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
