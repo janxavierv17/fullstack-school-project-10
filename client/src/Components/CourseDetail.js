@@ -23,13 +23,19 @@ export default function CourseDetail(props) {
 
 
     let materialsNeeded = ""
+    if (!loading && materialsNeeded === null) {
+        this.props.history.push("/not-found")
+    }
+
     if (!loading && data.course.materialsNeeded !== null) {
-        const splitMaterialString = data.course.materialsNeeded.split("*")
+        const splitMaterialString = data.course.materialsNeeded.split("\n")
         const filteredString = splitMaterialString.filter(function (el) {
             return el !== ""
         })
-        materialsNeeded = filteredString.map((mats, index) => <li key={index}> {mats} </li>)
+        materialsNeeded = filteredString.map((mats, index) => mats === null ? "" : <li key={index}> {mats} </li>)
     }
+
+
 
     return (
         <main>
@@ -55,7 +61,9 @@ export default function CourseDetail(props) {
                         <p>{data.course.estimatedTime}</p>
                         <h3 className="course--detail--title">Materials Needed</h3>
                         <ul className="course--detail-list">
-                            {materialsNeeded}
+                            {
+                                materialsNeeded
+                            }
                         </ul>
                     </div>
                 </div>

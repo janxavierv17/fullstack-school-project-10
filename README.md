@@ -1,4 +1,4 @@
-<h1>Project - REST API</h1> <br/>
+<h1>Project - School/University Database</h1> <br/>
 
 Please run the following line of codes in your terminal to get started. <br/>
 <pre> npm seed, npm install & npm start </pre>

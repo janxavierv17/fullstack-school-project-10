@@ -2,15 +2,13 @@ import React, { Component } from "react"
 class UpdateCourse extends Component {
 
     state = {
-        title: "",
-        description: "",
+        courseTitle: "",
+        courseDescription: "",
         estimatedTime: "",
         materialsNeeded: "",
         firstName: "",
         lastName: "",
         errors: [],
-        courseDetails: {},
-
     }
 
     getCourse = async () => {
@@ -19,8 +17,8 @@ class UpdateCourse extends Component {
 
         this.setState(() => {
             return {
-                title: response.course.title,
-                description: response.course.description,
+                courseTitle: response.course.title,
+                courseDescription: response.course.description,
                 estimatedTime: response.course.estimatedTime,
                 materialsNeeded: response.course.materialsNeeded,
                 firstName: response.course.User.firstName,
@@ -28,6 +26,7 @@ class UpdateCourse extends Component {
             }
         })
     }
+
     componentDidMount() {
         this.getCourse();
     }
@@ -53,17 +52,26 @@ class UpdateCourse extends Component {
 
         context.data.updateCourse(courseID, courseDetails, emailAddress, password)
             .then(errors => {
-                if (errors.length) {
-                    this.setState({ errors });
-                } else {
-                    console.log("Course successfully updated.");
-                }
+                console.log(errors)
             })
             .catch((err) => { //handle rejected promises
                 console.log(err);
-                this.props.history.push('/error');
+                this.props.history.push('/forbidden');
             })
+        // .then(errors => {
+        //     if (errors.length) {
+        //         console.log("ERRORS:", errors)
+        //         this.setState({ errors });
+        //     } else {
+        //         console.log("Course successfully updated.");
+        //     }
+        // })
+        // .catch((err) => { //handle rejected promises
+        //     console.log(err.message);
+        //     // this.props.history.push('/error');
+        // })
     }
+
     render() {
         return (
             <main>
@@ -71,21 +79,21 @@ class UpdateCourse extends Component {
                     <h2>Update Course</h2>
                     <form onSubmit={this.handleSubmit}>
                         <div className="main--flex">
-
                             <div>
                                 <label htmlFor="courseTitle">Course Title</label>
-                                <input id="courseTitle" name="title" type="text" value={this.state.title} onChange={this.handleChange} />
+                                <input id="courseTitle" name="courseTitle" type="text" value={this.state.courseTitle} onChange={this.handleChange} />
 
                                 <p>By {this.state.firstName} {this.state.lastName}</p>
 
                                 <label htmlFor="courseDescription">Course Description</label>
-                                <input id="courseDescription" name="description" type="text" value={this.state.description} onChange={this.handleChange} />
-
+                                <input id="courseDescription" name="courseDescription" type="text" value={this.state.courseDescription} onChange={this.handleChange} />
+                            </div>
+                            <div>
                                 <label htmlFor="estimatedTime">Estimated Time</label>
                                 <input id="estimatedTime" name="estimatedTime" type="text" value={this.state.estimatedTime} onChange={this.handleChange} />
 
                                 <label htmlFor="materialsNeeded">Materials Needed</label>
-                                <input id="materialsNeeded" name="materialsNeeded" type="text" value={this.state.materialsNeeded} onChange={this.handleChange} />
+                                <textarea id="materialsNeeded" name="materialsNeeded" type="text" value={this.state.materialsNeeded} onChange={this.handleChange} />
 
                                 <button className="button" type="submit">Update Course</button>
                                 <button className="button button-secondary" onClick={() => { this.props.history.push("/") }}> Cancel</button>

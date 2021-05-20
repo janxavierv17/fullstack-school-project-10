@@ -37,6 +37,7 @@ export default class CreateCourse extends Component {
                     this.setState({ errors });
                 } else {
                     console.log("Course successfully created.");
+                    this.props.history.push("/")
                 }
             })
             .catch((err) => { //handle rejected promises
