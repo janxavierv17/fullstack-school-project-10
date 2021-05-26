@@ -2,8 +2,8 @@ import React, { Component } from "react"
 class UpdateCourse extends Component {
 
     state = {
-        courseTitle: "",
-        courseDescription: "",
+        title: "",
+        description: "",
         estimatedTime: "",
         materialsNeeded: "",
         firstName: "",
@@ -17,8 +17,8 @@ class UpdateCourse extends Component {
 
         this.setState(() => {
             return {
-                courseTitle: response.course.title,
-                courseDescription: response.course.description,
+                title: response.course.title,
+                description: response.course.description,
                 estimatedTime: response.course.estimatedTime,
                 materialsNeeded: response.course.materialsNeeded,
                 firstName: response.course.User.firstName,
@@ -46,47 +46,54 @@ class UpdateCourse extends Component {
         event.preventDefault();
         const { context } = this.props;
         const { emailAddress, password, id } = context.authenticatedUser;
-        const { title, description, estimatedTime, materialsNeeded } = this.state;
+        const { title, description, estimatedTime, materialsNeeded } = this.state
         const courseID = this.props.match.params.id
         const courseDetails = { id, title, description, estimatedTime, materialsNeeded }
 
-        context.data.updateCourse(courseID, courseDetails, emailAddress, password)
+        console.log("The course ID", courseID)
+        const userPassword = password[0]
+        context.data.updateCourse(courseID, courseDetails, emailAddress, userPassword)
             .then(errors => {
-                console.log(errors)
+                if (errors.length) {
+                    this.setState({ errors });
+                } else {
+                    console.log("Course successfully updated.");
+                    this.props.history.push("/")
+                }
             })
             .catch((err) => { //handle rejected promises
-                console.log(err);
-                this.props.history.push('/forbidden');
+                console.log("Something went wrong. ", err);
+                this.props.history.push('/error');
             })
-        // .then(errors => {
-        //     if (errors.length) {
-        //         console.log("ERRORS:", errors)
-        //         this.setState({ errors });
-        //     } else {
-        //         console.log("Course successfully updated.");
-        //     }
-        // })
-        // .catch((err) => { //handle rejected promises
-        //     console.log(err.message);
-        //     // this.props.history.push('/error');
-        // })
     }
 
     render() {
+        const bunchOfErrors = this.state.errors.map((error, index) => {
+            return <li key={index}>{error}</li>
+        })
         return (
             <main>
                 <div className="wrap">
                     <h2>Update Course</h2>
+                    <div className="validation-errors">
+                        {this.state.errors && this.state.errors.length > 0
+                            ? <div className="validation--errors">
+                                <h3>Validation Errors</h3>
+                                {bunchOfErrors}
+                            </div>
+                            : null
+                        }
+                    </div>
                     <form onSubmit={this.handleSubmit}>
                         <div className="main--flex">
                             <div>
                                 <label htmlFor="courseTitle">Course Title</label>
-                                <input id="courseTitle" name="courseTitle" type="text" value={this.state.courseTitle} onChange={this.handleChange} />
+                                <input id="courseTitle" name="title" type="text" value={this.state.title} onChange={this.handleChange} />
 
                                 <p>By {this.state.firstName} {this.state.lastName}</p>
 
                                 <label htmlFor="courseDescription">Course Description</label>
-                                <input id="courseDescription" name="courseDescription" type="text" value={this.state.courseDescription} onChange={this.handleChange} />
+                                <input id="courseDescription" name="description" type="text" value={this.state.description} onChange={this.handleChange} />
                             </div>
                             <div>
                                 <label htmlFor="estimatedTime">Estimated Time</label>

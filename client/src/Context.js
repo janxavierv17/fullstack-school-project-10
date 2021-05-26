@@ -27,7 +27,6 @@ export class Provider extends Component {
             authenticatedUser: authenticatedUser
         }
 
-        console.log("Context AuthenticatedUser: ", this.state.authenticatedUser)
         return (
             <Context.Provider value={value}>
                 {this.props.children}
@@ -68,7 +67,6 @@ export const Consumer = Context.Consumer;
  */
 export default function withContext(Component) {
     return function contextComponent(props) {
-        console.log("From Context HOC props: ", props)
         return (
             <Context.Consumer>
                 {context => <Component {...props} context={context} />}

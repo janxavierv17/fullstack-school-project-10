@@ -44,10 +44,25 @@ export default class UserSignIn extends Component {
     }
 
     render() {
+        console.log(this.state.errors)
+        const errors = this.state.errors.map((error, index) => {
+            return <li key={index}>{error}</li>
+        })
         return (
             <main>
                 <div className="form--centered">
                     <h2>Sign in</h2>
+                    <div className="validation-errors">
+                        {errors && errors.length > 0
+
+                            ? <>
+                                <div className="validation--errors">
+                                    {errors}
+                                </div>
+                            </>
+                            : null
+                        }
+                    </div>
                     <form onSubmit={this.handleSubmit}>
                         <label htmlFor="emailAddress">Email Address</label>
                         <input onChange={this.onChange} value={this.state.emailAddress} id="emailAddress" name="emailAddress" type="email" />

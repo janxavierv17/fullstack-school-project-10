@@ -11,7 +11,6 @@ export default function Courses(props) {
             response = await response.json();
             setData(response.courses)
         }
-
         listOfCourses();
     }, [])
 

@@ -27,6 +27,7 @@ export default class Data {
             const encodedCredentials = btoa(`${credentials.emailAddress}:${credentials.password}`)
             options.headers['Authorization'] = `Basic ${encodedCredentials}`
         }
+        console.log("URL", url)
         return fetch(url, options)
     }
 
@@ -75,6 +76,7 @@ export default class Data {
 
     async updateCourse(courseID, courseDetails, emailAddress, password) {
         const response = await this.api(`/courses/${courseID}`, 'PUT', courseDetails, true, { emailAddress, password })
+        console.log("from DATA", courseID, courseDetails, emailAddress, password)
         if (response.status === 204) {
             return [];
         }

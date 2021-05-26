@@ -61,7 +61,9 @@ export default class CreateCourse extends Component {
 
     render() {
         const { title, description, estimatedTime, materialsNeeded, errors } = this.state
-
+        const bunchOfErrors = this.state.errors.map((error, index) => {
+            return <li key={index}>{error}</li>
+        })
         return (
             <main>
                 <div className="wrap">
@@ -70,7 +72,7 @@ export default class CreateCourse extends Component {
                         {errors && errors.length > 0
                             ? <div className="validation--errors">
                                 <h3>Validation Errors</h3>
-                                {errors}
+                                {bunchOfErrors}
                             </div>
                             : null
                         }

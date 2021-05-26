@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import ReactMarkdown from 'react-markdown';
 import { Link } from "react-router-dom"
 
 export default function CourseDetail(props) {
@@ -7,8 +8,7 @@ export default function CourseDetail(props) {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
     const [courseID, setCourseID] = useState(null)
-
-
+    const [userID, setUserID] = useState()
 
     useEffect(() => {
         const fetchCourse = async () => {
@@ -17,33 +17,40 @@ export default function CourseDetail(props) {
             setData(response)
             setLoading(false)
             setCourseID(response.course.id)
+            setUserID(response.course.User.id)
         }
         fetchCourse();
     }, [id])
 
-
-    let materialsNeeded = ""
+    let materialsNeeded = ''
     if (!loading && materialsNeeded === null) {
         this.props.history.push("/not-found")
     }
 
     if (!loading && data.course.materialsNeeded !== null) {
-        const splitMaterialString = data.course.materialsNeeded.split("\n")
-        const filteredString = splitMaterialString.filter(function (el) {
-            return el !== ""
-        })
-        materialsNeeded = filteredString.map((mats, index) => mats === null ? "" : <li key={index}> {mats} </li>)
+        materialsNeeded = <ReactMarkdown>{data.course.materialsNeeded}</ReactMarkdown>
     }
-
-
-
+    const authenticatedUser = props.context.authenticatedUser
+    const authorized = authenticatedUser && (authenticatedUser.id === userID)
     return (
         <main>
             <div className="actions--bar">
                 <div className="wrap">
-                    <div className="button">
-                        <Link to={`${courseID}/update`}>Update Course</Link>
-                    </div>
+                    {
+                        authorized
+                            ? <>
+                                <div className="button">
+                                    <Link to={`${courseID}/update`}>Update Course</Link>
+                                </div>
+                                <div className="button">
+                                    <Link to={`${courseID}/delete`}>Delete Course</Link>
+                                </div>
+                            </>
+                            : <div className="button">
+                                <Link to="/">Return Home</Link>
+                            </div>
+                    }
+
                 </div>
             </div>
 
@@ -54,16 +61,14 @@ export default function CourseDetail(props) {
                         <h3 className="course--detail--title">Course</h3>
                         <h4 className="course--name">{data.course.title}</h4>
                         <p>By: {data.course.User.firstName} {data.course.User.lastName}</p>
-                        <p>{data.course.description}</p>
+                        <ReactMarkdown >{data.course.description}</ReactMarkdown>
                     </div>
                     <div>
                         <h3 className="course--detail-title">Estimated Time</h3>
                         <p>{data.course.estimatedTime}</p>
                         <h3 className="course--detail--title">Materials Needed</h3>
                         <ul className="course--detail-list">
-                            {
-                                materialsNeeded
-                            }
+                            {materialsNeeded}
                         </ul>
                     </div>
                 </div>

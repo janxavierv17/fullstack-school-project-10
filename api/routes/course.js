@@ -84,7 +84,7 @@ router.put("/courses/:id", authenticateUser, asyncHandler(async (request, respon
         const creator = request.currentUser
         // Find the course to update using the primary key method.
         const course = await Course.findByPk(request.params.id)
-
+        console.log("The Course:", course)
         if (creator.dataValues.id === course.dataValues.userId) {
             await course.update(request.body)
             response.status(204).json({ message: "Editing course complete." });
@@ -103,6 +103,7 @@ router.put("/courses/:id", authenticateUser, asyncHandler(async (request, respon
         }
     }
 }))
+
 
 /**
  * @desc    Allow delete only if the user is the creator of hte course.
