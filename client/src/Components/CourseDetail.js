@@ -10,6 +10,18 @@ export default function CourseDetail(props) {
     const [courseID, setCourseID] = useState(null)
     const [userID, setUserID] = useState()
 
+    function deleteCourse() {
+        let context = props.context;
+        context.data.deleteCourse(id, context.authenticatedUser.emailAddress, context.authenticatedUser.password)
+            .then(errors => {
+                if (errors.length === 0) {
+                    window.location.reload();
+                } else {
+                    props.history.push('/error');
+                }
+            })
+    }
+
     useEffect(() => {
         const fetchCourse = async () => {
             let response = await fetch(`http://localhost:5000/api/courses/${id}`)
@@ -24,7 +36,7 @@ export default function CourseDetail(props) {
 
     let materialsNeeded = ''
     if (!loading && materialsNeeded === null) {
-        this.props.history.push("/not-found")
+        props.history.push("/not-found")
     }
 
     if (!loading && data.course.materialsNeeded !== null) {
@@ -43,7 +55,7 @@ export default function CourseDetail(props) {
                                     <Link to={`${courseID}/update`}>Update Course</Link>
                                 </div>
                                 <div className="button">
-                                    <Link to={`${courseID}/delete`}>Delete Course</Link>
+                                    <Link to="/" onClick={deleteCourse}>Delete Course</Link>
                                 </div>
                             </>
                             : <div className="button">

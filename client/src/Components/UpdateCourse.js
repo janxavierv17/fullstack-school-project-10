@@ -103,7 +103,7 @@ class UpdateCourse extends Component {
                                 <textarea id="materialsNeeded" name="materialsNeeded" type="text" value={this.state.materialsNeeded} onChange={this.handleChange} />
 
                                 <button className="button" type="submit">Update Course</button>
-                                <button className="button button-secondary" onClick={() => { this.props.history.push("/") }}> Cancel</button>
+                                <button className="button button-secondary" onClick={() => { this.props.history.push(`/courses/${this.props.match.params.id}`) }}> Cancel</button>
                             </div>
 
 
