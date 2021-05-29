@@ -93,7 +93,7 @@ class UpdateCourse extends Component {
                                 <p>By {this.state.firstName} {this.state.lastName}</p>
 
                                 <label htmlFor="courseDescription">Course Description</label>
-                                <input id="courseDescription" name="description" type="text" value={this.state.description} onChange={this.handleChange} />
+                                <texarea id="courseDescription" name="description" type="text" value={this.state.description} onChange={this.handleChange} />
                             </div>
                             <div>
                                 <label htmlFor="estimatedTime">Estimated Time</label>

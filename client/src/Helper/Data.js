@@ -48,7 +48,7 @@ export default class Data {
         if (response.status === 201) {
             return [];
         }
-        else if (response.status === 400 && response.status === 403) {
+        else if (response.status === 400) {
             return response.json().then(data => {
                 return data.errors;
             });
@@ -61,7 +61,6 @@ export default class Data {
 
     async createCourse(courseDetails, emailAddress, password) {
         const response = await this.api('/courses', 'POST', courseDetails, true, { emailAddress, password })
-
         if (response.status === 201) {
             return [];
         }

@@ -19,23 +19,20 @@ export default class UserSignUp extends Component {
         context.data.createUser(user)
             .then(errors => {
                 if (errors.length) {
-                    this.setState({ errors });
+                    this.setState({ errors })
                 } else {
-                    console.log(`${emailAddress} is successfully signed up and authenticated!`);
+                    // Once signed up, that user automatically signs in.
                     context.actions.signIn(emailAddress, password)
-                        .then((user) => {
-                            if (user === null) {
-                                this.setState(() => {
-                                    return { errors: ["User unable to login"] }
-                                })
-                            } else {
-                                this.props.history.push('/')
-                            }
+                        .then(() => {
+                            console.log(`${firstName} ${lastName} is succesffully signed up and authenticated!`)
+                            this.props.history.push('/authenticated')
                         })
                 }
             })
-            .catch((err) => {
+            .catch(err => {
+                //handle the rejected promise
                 console.log(err);
+                //redirect to error page by pushing to history stack
                 this.props.history.push('/error');
             })
     }
@@ -55,7 +52,9 @@ export default class UserSignUp extends Component {
 
     render() {
         const { firstName, lastName, emailAddress, password, confirmPassword, errors, } = this.state;
-
+        const bunchOfErrors = this.state.errors.map((error, index) => {
+            return <li key={index}>{error}</li>
+        })
         return (
             <main>
                 <div className="form--centered">
@@ -63,7 +62,7 @@ export default class UserSignUp extends Component {
                     {errors && errors.length > 0
                         ? <div className="validation--errors">
                             <h3>Validation Errors</h3>
-                            {errors}
+                            {bunchOfErrors}
                         </div>
                         : null
                     }
