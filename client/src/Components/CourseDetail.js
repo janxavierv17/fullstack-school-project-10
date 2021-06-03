@@ -57,34 +57,40 @@ export default function CourseDetail(props) {
                                 <div className="button">
                                     <Link to="/" onClick={deleteCourse}>Delete Course</Link>
                                 </div>
+                                <div className="button button-secondary">
+                                    <Link to="/">Return to List</Link>
+                                </div>
                             </>
-                            : <div className="button">
-                                <Link to="/">Return Home</Link>
+                            : <div className="button button-secondary">
+                                <Link to="/">Return to List</Link>
                             </div>
                     }
 
                 </div>
             </div>
 
-            {loading
-                ? <h1>Loading ...</h1>
-                : <div className="main--flex">
-                    <div>
-                        <h3 className="course--detail--title">Course</h3>
-                        <h4 className="course--name">{data.course.title}</h4>
-                        <p>By: {data.course.User.firstName} {data.course.User.lastName}</p>
-                        <ReactMarkdown >{data.course.description}</ReactMarkdown>
+            <div className="wrap" >
+                {loading
+                    ? <h1>Loading ...</h1>
+                    : <div className="main--flex">
+                        <div>
+                            <h3 className="course--detail--title">Course</h3>
+                            <h4 className="course--name">{data.course.title}</h4>
+                            <p>By: {data.course.User.firstName} {data.course.User.lastName}</p>
+                            <ReactMarkdown >{data.course.description}</ReactMarkdown>
+                        </div>
+                        <div>
+                            <h3 className="course--detail-title">Estimated Time</h3>
+                            <p>{data.course.estimatedTime}</p>
+                            <h3 className="course--detail--title">Materials Needed</h3>
+                            <ul className="course--detail-list">
+                                {materialsNeeded}
+                            </ul>
+                        </div>
                     </div>
-                    <div>
-                        <h3 className="course--detail-title">Estimated Time</h3>
-                        <p>{data.course.estimatedTime}</p>
-                        <h3 className="course--detail--title">Materials Needed</h3>
-                        <ul className="course--detail-list">
-                            {materialsNeeded}
-                        </ul>
-                    </div>
-                </div>
-            }
+                }
+            </div>
         </main>
+
     )
 }
